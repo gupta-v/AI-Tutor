@@ -1,0 +1,206 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.chat-container {
+    width: 80%;
+    height: 80vh;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px gray;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Chat box */
+#chat-box {
+    height: 75%;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background: #fafafa;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* User messages (Right aligned) */
+.user-message {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 40%;
+    align-self: flex-end;
+    text-align: left;
+    margin: 5px 10px;
+}
+
+/* AI responses (Left aligned) */
+.ai-message {
+    background-color: #E5E5EA;
+    color: black;
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 70%;
+    align-self: flex-start;
+    text-align: left;
+    margin: 5px 10px;
+}
+
+/* Input section */
+.input-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    position: relative;
+}
+
+/* Input field */
+.textbar {
+    width: 75%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Buttons */
+button {
+    padding: 10px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Mic button active state */
+.mic-button.active {
+    background-color: #ff4136;
+    /* Red when active/listening */
+    animation: pulse 1.5s infinite;
+    /* Add pulse animation */
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 65, 54, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 65, 54, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 65, 54, 0);
+    }
+}
+
+/* Tooltip styling */
+.tooltip {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 150%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+}
+
+/* Show tooltip on hover */
+button:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Listening popup */
+#listening-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    display: flex;
+    /* Important! Make sure it's a flex container */
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Hidden class */
+.hidden {
+    display: none !important;
+}
+
+/* Wave animation */
+.wave-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    /* Align to bottom */
+    gap: 5px;
+    margin-top: 15px;
+    height: 40px;
+    /* Fixed height container */
+}
+
+.wave {
+    width: 6px;
+    height: 25px;
+    background-color: #007BFF;
+    border-radius: 4px;
+    animation: wave-animation 1.2s infinite ease-in-out;
+}
+
+/* Different delays for wave effect */
+.wave:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.wave:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.wave:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.wave:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.wave:nth-child(5) {
+    animation-delay: 0.8s;
+}
+
+@keyframes wave-animation {
+
+    0%,
+    100% {
+        transform: scaleY(0.3);
+    }
+
+    50% {
+        transform: scaleY(1);
+    }
+}

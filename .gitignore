@@ -1,0 +1,11 @@
+.env
+.env.local
+.venv
+env/
+venviron/
+venv/
+__pycache__/
+config.py
+path.py
+.codegpt
+backend/

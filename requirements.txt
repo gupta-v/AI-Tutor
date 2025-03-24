@@ -1,0 +1,15 @@
+google-generativeai
+langchain 
+langchain-community
+langchain-openai
+langchain-google-geneai
+phidata 
+openai 
+vosk 
+google-cloud-texttospeech
+python-dotenv
+flask
+flask-cors
+markdown2 
+beautifulsoup4
+mistune
