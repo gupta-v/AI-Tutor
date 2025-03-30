@@ -13,6 +13,13 @@
   <body>
     <div class="chat-container">
       <h2>🎓 AI Tutor</h2>
+
+      <!-- Status indicator for RAG system -->
+      <div id="rag-status" class="status-indicator">
+        <span class="status-dot inactive"></span>
+        <span class="status-text">No PDFs loaded</span>
+      </div>
+
       <div id="chat-box"></div>
 
       <!-- Listening Popup -->
@@ -26,23 +33,71 @@
             <div class="wave"></div>
             <div class="wave"></div>
           </div>
+          <button id="stop-listening-btn" onclick="stopListening()">
+            Stop
+          </button>
+        </div>
+      </div>
+
+      <!-- PDF Loading Progress -->
+      <div id="loading-indicator" class="hidden">
+        <div class="loading-box">
+          <p id="loading-text">Loading PDFs...</p>
+          <div class="spinner"></div>
         </div>
       </div>
 
       <div class="input-container">
-        <input
+        <textarea
           class="textbar"
-          type="text"
           id="user-input"
           placeholder="Type your question..."
-        />
-        <button onclick="sendMessage()">Send</button>
-        <button class="mic-button" onclick="startVoiceInput()">
-          🎤 <span class="tooltip">Tap to speak/stop</span>
-        </button>
-        <button class="stop-button" onclick="stopSpeech()">
-          🛑 <span class="tooltip">Stop speech</span>
-        </button>
+          rows="1"
+          onkeydown="handleTextareaInput(event)"
+        ></textarea>
+        <div class="button-group">
+          <button class="send-button" onclick="sendMessage()">Send</button>
+          <button class="mic-button" onclick="toggleVoiceInput()">
+            🎤 <span class="tooltip">Tap to speak/stop</span>
+          </button>
+        </div>
+
+        <div class="pdf-controls">
+          <input
+            type="file"
+            id="pdf-files"
+            accept=".pdf"
+            multiple
+            style="display: none"
+            onchange="handleFileUpload(this.files)"
+          />
+          <input
+            type="file"
+            id="pdf-folder"
+            webkitdirectory
+            directory
+            multiple
+            style="display: none"
+            onchange="handleFolderUpload(this.files)"
+          />
+
+          <button
+            class="doc-button"
+            onclick="document.getElementById('pdf-files').click()"
+          >
+            📄 <span class="tooltip">Add PDF Files</span>
+          </button>
+          <button
+            class="doc-button"
+            onclick="document.getElementById('pdf-folder').click()"
+          >
+            📁 <span class="tooltip">Add PDF Folder</span>
+          </button>
+
+          <button class="stop-button" onclick="stopSpeech()">
+            🛑 <span class="tooltip">Stop speech</span>
+          </button>
+        </div>
       </div>
     </div>
   </body>

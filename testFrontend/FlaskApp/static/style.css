@@ -2,18 +2,57 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     text-align: center;
+    margin: 0;
+    padding: 20px;
 }
 
 .chat-container {
     width: 80%;
-    height: 80vh;
+    height: 85vh;
     margin: auto;
     background: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px 0px gray;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
+}
+
+/* App header */
+h2 {
+    margin-top: 0;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Status indicator */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.status-dot.active {
+    background-color: #28a745;
+    box-shadow: 0 0 5px #28a745;
+}
+
+.status-dot.inactive {
+    background-color: #dc3545;
+}
+
+.status-text {
+    font-style: italic;
 }
 
 /* Chat box */
@@ -23,9 +62,10 @@ body {
     padding: 10px;
     border: 1px solid #ddd;
     background: #fafafa;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     display: flex;
     flex-direction: column;
+    border-radius: 5px;
 }
 
 /* User messages (Right aligned) */
@@ -33,11 +73,13 @@ body {
     background-color: #007BFF;
     color: white;
     padding: 10px;
-    border-radius: 10px;
-    max-width: 40%;
+    border-radius: 15px 15px 0 15px;
+    max-width: 70%;
     align-self: flex-end;
     text-align: left;
     margin: 5px 10px;
+    word-wrap: break-word;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* AI responses (Left aligned) */
@@ -45,38 +87,113 @@ body {
     background-color: #E5E5EA;
     color: black;
     padding: 10px;
+    border-radius: 15px 15px 15px 0;
+    max-width: 70%;
+    align-self: flex-start;
+    text-align: left;
+    margin: 5px 10px;
+    word-wrap: break-word;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Thinking state for AI messages */
+.ai-message.thinking {
+    background-color: #f0f0f0;
+    animation: pulse 1.5s infinite;
+}
+
+/* Error state for AI messages */
+.ai-message.error {
+    background-color: #ffebee;
+    border-left: 3px solid #f44336;
+}
+
+/* Retrieval information */
+.retrieval-info {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px 10px;
+    max-width: 70%;
+    align-self: flex-start;
+    margin: 5px 10px;
+}
+
+.retrieval-info summary {
+    cursor: pointer;
+    color: #007BFF;
+    padding: 5px 0;
+    font-weight: bold;
+}
+
+.retrieved-content {
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    margin-top: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+}
+
+/* File name display */
+.file-name-display {
+    background-color: #f0f0f0;
+    color: #666;
+    padding: 10px;
     border-radius: 10px;
     max-width: 70%;
     align-self: flex-start;
     text-align: left;
     margin: 5px 10px;
+    font-style: italic;
 }
 
 /* Input section */
 .input-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     gap: 10px;
     padding: 10px;
     position: relative;
 }
 
-/* Input field */
+/* Textarea input field */
 .textbar {
-    width: 75%;
-    padding: 10px;
+    width: 100%;
+    padding: 12px;
     border: 1px solid #ddd;
     border-radius: 5px;
+    resize: none;
+    min-height: 20px;
+    max-height: 150px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+/* Button group */
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* PDF controls */
+.pdf-controls {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 /* Buttons */
 button {
-    padding: 10px;
+    padding: 10px 15px;
     border: none;
     background-color: #007BFF;
     color: white;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
     position: relative;
 }
 
@@ -84,12 +201,27 @@ button:hover {
     background-color: #0056b3;
 }
 
+.send-button {
+    background-color: #007BFF;
+    min-width: 80px;
+}
+
+.mic-button {
+    background-color: #6c757d;
+}
+
+.doc-button {
+    background-color: #28a745;
+}
+
+.stop-button {
+    background-color: #dc3545;
+}
+
 /* Mic button active state */
 .mic-button.active {
     background-color: #ff4136;
-    /* Red when active/listening */
     animation: pulse 1.5s infinite;
-    /* Add pulse animation */
 }
 
 @keyframes pulse {
@@ -122,6 +254,7 @@ button:hover {
     opacity: 0;
     transition: opacity 0.3s;
     font-size: 12px;
+    z-index: 5;
 }
 
 /* Show tooltip on hover */
@@ -142,9 +275,44 @@ button:hover .tooltip {
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
     z-index: 10;
     display: flex;
-    /* Important! Make sure it's a flex container */
     flex-direction: column;
     align-items: center;
+}
+
+/* Loading indicator */
+#loading-indicator {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: #007BFF;
+    animation: spin 1s linear infinite;
+    margin: 15px 0;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Hidden class */
@@ -157,11 +325,9 @@ button:hover .tooltip {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    /* Align to bottom */
     gap: 5px;
     margin-top: 15px;
     height: 40px;
-    /* Fixed height container */
 }
 
 .wave {
@@ -202,5 +368,57 @@ button:hover .tooltip {
 
     50% {
         transform: scaleY(1);
+    }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .chat-container {
+        width: 95%;
+        height: 90vh;
+    }
+
+    .user-message,
+    .ai-message,
+    .retrieval-info {
+        max-width: 85%;
+    }
+
+    .input-container {
+        flex-direction: column;
+    }
+
+    .button-group,
+    .pdf-controls {
+        justify-content: center;
+    }
+}
+
+.stop-button.stopping {
+    background-color: #ffc107;
+    animation: pulse 1s infinite;
+}
+
+/* Enhanced stop button styles */
+.stop-button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.stop-button:active {
+    transform: scale(0.95);
+}
+
+@keyframes pulse-stop {
+    0% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
     }
 }

@@ -13,3 +13,13 @@ flask-cors
 markdown2 
 beautifulsoup4
 mistune
+langchain-huggingface 
+sentence_transformers
+langchain-cli
+langchain-ollama
+faiss-cpu
+speechrecognition
+pyttsx3
+html2text
+gtts 
+pygame
