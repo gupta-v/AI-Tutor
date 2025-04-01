@@ -11,7 +11,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")
 
 from aiFeatures.python.ai_response import generate_response_without_retrieval, generate_response_with_retrieval, ChatSessionManager
 from aiFeatures.python.speech_to_text import speech_to_text
-from aiFeatures.python.text_to_speech import text_to_speech, stop_speech
+from aiFeatures.python.text_to_speech import say, stop_speech
 from aiFeatures.python.rag_pipeline import index_pdfs, retrieve_answer
 
 app = Flask(__name__)
@@ -25,19 +25,6 @@ default_session_id = "user_session_001"  # Default session ID
 
 import re
 
-def strip_html(html_text):
-    """Remove HTML tags from text to make it suitable for text-to-speech."""
-    # Remove HTML tags
-    clean_text = re.sub(r'<.*?>', '', html_text)
-    # Fix common HTML entities
-    clean_text = clean_text.replace('&nbsp;', ' ')
-    clean_text = clean_text.replace('&amp;', '&')
-    clean_text = clean_text.replace('&lt;', '<')
-    clean_text = clean_text.replace('&gt;', '>')
-    clean_text = clean_text.replace('&quot;', '"')
-    # Remove extra whitespace
-    clean_text = re.sub(r'\s+', ' ', clean_text).strip()
-    return clean_text
 
 def chunk_text(text, max_length=150):
     """Split text into smaller chunks at sentence boundaries for faster TTS processing."""
@@ -73,7 +60,7 @@ def clear_session():
         vector_store = None
         
         # Clear the session for this user
-        session_manager.clear_session(default_session_id)
+        session_manager.delete_session(default_session_id)
         
         return jsonify({"success": True, "message": "Session cleared successfully"})
     
@@ -145,25 +132,7 @@ def ask():
                 session_manager
             )
         
-        # Strip HTML for speech
-        speech_text = strip_html(response)
-        
-        # Process the first chunk immediately for faster response
-        speech_chunks = chunk_text(speech_text)
-        if speech_chunks:
-            # Start the first chunk immediately
-            text_to_speech(speech_chunks[0])
-            
-            # Schedule remaining chunks for processing after the first one
-            if len(speech_chunks) > 1:
-                def process_remaining_chunks():
-                    for chunk in speech_chunks[1:]:
-                        # Wait for previous chunk to finish
-                        while speech_active:
-                            time.sleep(0.1)
-                        text_to_speech(chunk)
-                        
-                threading.Thread(target=process_remaining_chunks, daemon=True).start()
+        say(response)  # Convert response to speech
 
         # Return both the response and retrieved info
         return jsonify({
@@ -196,25 +165,23 @@ def process_speech():
         return jsonify({"error": "No text provided"}), 400
     
     try:
-        # Strip HTML tags for better speech
-        clean_text = strip_html(text)
-        threading.Thread(target=lambda: text_to_speech(clean_text)).start()
+        say(text)  # Convert text to speech
         return jsonify({"success": True})
     except Exception as e:
         print(f"Text-to-speech error: {e}")
         return jsonify({"error": f"Failed to convert text to speech: {str(e)}"}), 500
     
-# Change this function name@app.route("/stop-speech", methods=["POST"])
+    
 @app.route("/stop-speech", methods=["POST"])
 def handle_stop_speech():
     """Stops ongoing speech output."""
     try:
         success = stop_speech()
-        print(f"Stop speech request received. Result: {success}")
         return jsonify({"message": "Speech stopped", "success": success})
     except Exception as e:
         print(f"Error stopping speech: {e}")
         return jsonify({"error": f"Failed to stop speech: {str(e)}"}), 500
+
     
 if __name__ == "__main__":
     app.run(debug=True)
