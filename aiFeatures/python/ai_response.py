@@ -78,7 +78,7 @@ class ChatSessionManager:
         return False
 
 # Prompt templates with updated system messages and chat history context
-def create_prompt_with_history(session: ChatSession):
+def create_shunya_prompt_with_history(session: ChatSession):
     """Create a prompt template that includes chat history."""
     return ChatPromptTemplate.from_messages([
         ("system", "You are an experienced AI Tutor specializing in personalized education. "
@@ -165,16 +165,16 @@ def generate_response_without_retrieval(session_id: str, prompt: str,scraped_con
         session.add_message("human", prompt)
         
         # Create prompt with history and generate response
-        prompt_template = create_prompt_with_history(session)
-        response = (prompt_template | llm_pratham | StrOutputParser()).invoke({
+        prompt_template = create_shunya_prompt_with_history(session)
+        shunya_response = (prompt_template | llm_shunya | StrOutputParser()).invoke({
             "query": prompt,
             "scraped_content": scraped_content,
             })
         
         # Add assistant response to history
-        session.add_message("assistant", response)
+        session.add_message("assistant", shunya_response)
         
-        return format_response(response)
+        return format_response(shunya_response)
     except Exception as e:
         return f"Error: {str(e)}"
 
@@ -208,7 +208,7 @@ def generate_response_with_retrieval(session_id: str, prompt: str, retrieved_dat
         # Add assistant response to history
         session.add_message("assistant", dviteey_response)
         
-        return format_response(dviteey_response),scraped_text, retrieved_data
+        return format_response(dviteey_response)
     except Exception as e:
         return f"Error: {str(e)}"
     
