@@ -11,3 +11,4 @@ path.py
 backend/
 docs/
 embedding.py
+scraped_content.txt
