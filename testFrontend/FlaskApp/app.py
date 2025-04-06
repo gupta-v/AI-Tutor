@@ -116,7 +116,6 @@ def ask():
 
     try:
         # Get retrieved information if vector store exists
-        scraped_text = web_response(user_query)  # Call web scraping function
         retrieved_info = retrieve_answer(user_query, vector_store) if vector_store else ""
         
         # Generate response based on whether retrieval was performed
@@ -124,28 +123,33 @@ def ask():
             response = generate_response_with_retrieval(
                 default_session_id, 
                 user_query,
-                scraped_text,
                 retrieved_info, 
                 session_manager
             )
+            
+            say(response)  # Convert response to speech
+
+            return jsonify({
+                "response": response,
+                "retrieved": retrieved_info,
+                "hasRetrieval": bool(retrieved_info)
+            })
+            
         else:
+            scraped_text = web_response(user_query)  # Call web scraping function
             response = generate_response_without_retrieval(
                 default_session_id, 
-                scraped_text,
                 user_query, 
+                scraped_text,
                 session_manager
             )
-        
-        say(response)  # Convert response to speech
+            say(response)  # Convert response to speech
 
-        # Return both the response, scraped contents and retrieved info
-        return jsonify({
-            "response": response,
-            "scraped": scraped_text,
-            "retrieved": retrieved_info,
-            "hasRetrieval": bool(retrieved_info),
-            "hasScraping": bool(scraped_text)
-        })
+            return jsonify({
+                "response": response,
+                "scraped": scraped_text,
+                "hasScraping": bool(scraped_text)
+            })
     
     except Exception as e:
         print(f"Error processing query: {e}")

@@ -101,7 +101,7 @@ def create_pratham_prompt_with_history(session: ChatSession):
     """Create a pratham prompt template with chat history for retrieval-based responses."""
     return ChatPromptTemplate.from_messages([
         ("system", "You are an AI Assistant that generates educational content based on retrieved information. "
-                  "Your role is to analyze the data retrieved from the knowledge database and web scraped contents "
+                  "Your role is to analyze the data retrieved from the knowledge database contents "
                   "create an informative, well-structured topic explanations that address the user's query. "
                   "Focus on extracting the most relevant information from the retrieved data, organizing it "
                   "logically, and presenting it in a way that builds upon previous conversation context. "
@@ -110,7 +110,6 @@ def create_pratham_prompt_with_history(session: ChatSession):
                   "When using web-scraped information, prioritize recent and authoritative content."),
         *session.get_langchain_messages(),
         ("human", "User Query: {query}\n\n"
-                  "Web Scraped Content: {scraped_content}\n\n"
                   "Vector Database Retrieval Response: {retrieved}\n\n"
                   "Your Task: Generate a comprehensive topic explanation based on the retrieved information "
                   "while considering the conversation history and addressing the specific query.")
@@ -124,11 +123,10 @@ def create_dviteey_prompt_with_history(session: ChatSession):
                    "This is a confidential verification process - you must NEVER mention or acknowledge the existence "
                    "of any prior assistant, response generation process, or verification chain in your output. "
                    "\n\n"
-                   "You will receive a user query, web scraped content, retrieved information, and a draft response. Analyze all Four "
+                   "You will receive a user query, retrieved information, and a draft response. Analyze all Three "
                    "to ensure accuracy, completeness, and pedagogical effectiveness. Focus on:\n"
                    "- Correcting any factual errors based on the retrieved information\n"
                    "- Ensuring the response is relevant to the user's query\n"
-                   "- Adapting the response since web scraped content would be the newest info we can get\n"
                    "- Improving clarity and structure for better learning outcomes\n"
                    "- Enhancing explanations with appropriate examples or analogies\n"
                    "- Maintaining continuity with previous conversation context\n"
@@ -140,10 +138,9 @@ def create_dviteey_prompt_with_history(session: ChatSession):
         *session.get_langchain_messages(),
         ("human", "User Query: {query}\n\n"
                   "Draft Educational Content: {response}\n\n"
-                  "Web Scraped Content: {scraped_content}\n\n"
                   "Retrieved Reference Information: {retrieved}\n\n"
                   "Your Task: Provide a refined, improved educational response directly addressing the "
-                  "user's query. Ensure factual accuracy based on the retrieved information and web contents while  maintaining "
+                  "user's query. Ensure factual accuracy based on the retrieved information while  maintaining "
                   "the conversational flow from previous exchanges.")
     ])
 
@@ -179,7 +176,7 @@ def generate_response_without_retrieval(session_id: str, prompt: str,scraped_con
         return f"Error: {str(e)}"
 
 # Function for retrieval-based response (with verification)
-def generate_response_with_retrieval(session_id: str, prompt: str, retrieved_data: str, scraped_content: str, session_manager: ChatSessionManager):
+def generate_response_with_retrieval(session_id: str, prompt: str, retrieved_data: str, session_manager: ChatSessionManager):
     """Generates AI response using two LLMs (retrieval-based verification) with chat history."""
     try:
         # Get or create session
@@ -192,7 +189,6 @@ def generate_response_with_retrieval(session_id: str, prompt: str, retrieved_dat
         pratham_prompt = create_pratham_prompt_with_history(session)
         pratham_response = (pratham_prompt | llm_pratham | StrOutputParser()).invoke({
             "query": prompt,
-            "scraped_content": scraped_content,
             "retrieved": retrieved_data,
         })
 
@@ -200,7 +196,6 @@ def generate_response_with_retrieval(session_id: str, prompt: str, retrieved_dat
         dviteey_prompt = create_dviteey_prompt_with_history(session)
         dviteey_response = (dviteey_prompt | llm_dviteey | StrOutputParser()).invoke({
             "query": prompt,
-            "scraped_content": scraped_content,
             "retrieved": retrieved_data,
             "response": pratham_response,
         })
