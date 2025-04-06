@@ -12,8 +12,9 @@ from typing import List, Dict, Tuple, Optional
 
 load_dotenv()
 # Initialize AI Tutor Models
-llm_primary = ChatGoogleGenerativeAI(model="gemini-1.5-flash")  # Main LLM
-llm_secondary = ChatGoogleGenerativeAI(model="gemini-2.0-flash")  # Verification LLM
+llm_shunya = ChatGoogleGenerativeAI(model="gemini-1.5-flash")   # Shunya LLM
+llm_pratham = ChatGoogleGenerativeAI(model="gemini-1.5-flash")  # Pratham LLM
+llm_dviteey = ChatGoogleGenerativeAI(model="gemini-2.0-flash")  # Dviteey LLM
 
 @dataclass
 class Message:
@@ -95,8 +96,9 @@ def create_prompt_with_history(session: ChatSession):
                   "Please provide a helpful, educational response.")
     ])
 
-def create_primary_prompt_with_history(session: ChatSession):
-    """Create a primary prompt template with chat history for retrieval-based responses."""
+        
+def create_pratham_prompt_with_history(session: ChatSession):
+    """Create a pratham prompt template with chat history for retrieval-based responses."""
     return ChatPromptTemplate.from_messages([
         ("system", "You are an AI Assistant that generates educational content based on retrieved information. "
                   "Your role is to analyze the data retrieved from the knowledge database and web scraped contents "
@@ -114,8 +116,8 @@ def create_primary_prompt_with_history(session: ChatSession):
                   "while considering the conversation history and addressing the specific query.")
     ])
 
-def create_secondary_prompt_with_history(session: ChatSession):
-    """Create a secondary prompt template with chat history for response verification."""
+def create_dviteey_prompt_with_history(session: ChatSession):
+    """Create a dviteey prompt template with chat history for response verification."""
     return ChatPromptTemplate.from_messages([
         ("system", "You are an expert AI Tutor responsible for delivering the highest quality educational content. "
                    "Your task is to review and enhance the educational material provided to you. "
@@ -164,7 +166,7 @@ def generate_response_without_retrieval(session_id: str, prompt: str,scraped_con
         
         # Create prompt with history and generate response
         prompt_template = create_prompt_with_history(session)
-        response = (prompt_template | llm_primary | StrOutputParser()).invoke({
+        response = (prompt_template | llm_pratham | StrOutputParser()).invoke({
             "query": prompt,
             "scraped_content": scraped_content,
             })
@@ -182,31 +184,31 @@ def generate_response_with_retrieval(session_id: str, prompt: str, retrieved_dat
     try:
         # Get or create session
         session = session_manager.get_or_create_session(session_id)
-        
+
         # Add user message to history
         session.add_message("human", prompt)
-        
+
         # Step 1: Generate initial response with history
-        primary_prompt = create_primary_prompt_with_history(session)
-        primary_response = (primary_prompt | llm_primary | StrOutputParser()).invoke({
+        pratham_prompt = create_pratham_prompt_with_history(session)
+        pratham_response = (pratham_prompt | llm_pratham | StrOutputParser()).invoke({
             "query": prompt,
             "scraped_content": scraped_content,
             "retrieved": retrieved_data,
         })
 
         # Step 2: Verify & refine response using retrieval data and history
-        secondary_prompt = create_secondary_prompt_with_history(session)
-        secondary_response = (secondary_prompt | llm_secondary | StrOutputParser()).invoke({
+        dviteey_prompt = create_dviteey_prompt_with_history(session)
+        dviteey_response = (dviteey_prompt | llm_dviteey | StrOutputParser()).invoke({
             "query": prompt,
             "scraped_content": scraped_content,
             "retrieved": retrieved_data,
-            "response": primary_response,
+            "response": pratham_response,
         })
         
         # Add assistant response to history
-        session.add_message("assistant", secondary_response)
+        session.add_message("assistant", dviteey_response)
         
-        return format_response(secondary_response)
+        return format_response(dviteey_response),scraped_text, retrieved_data
     except Exception as e:
         return f"Error: {str(e)}"
     
