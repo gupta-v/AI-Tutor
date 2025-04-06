@@ -7,6 +7,12 @@ speech_process = None
 
 def speak_text(text):
     engine = pyttsx3.init()
+     # Use the Microsoft Speech API for more voices (Windows)
+    voices = engine.getProperty('voices')
+    engine.setProperty('voice', voices[1].id)  # Change index if needed
+    # Set the speech rate (default is usually ~200 words per minute)
+    rate = engine.getProperty('rate')  # Get the current rate
+    engine.setProperty('rate', rate - 25)  # Decrease the rate for slower speech
     engine.say(text)
     engine.runAndWait()
 

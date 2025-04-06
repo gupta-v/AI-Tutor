@@ -222,7 +222,16 @@ function sendMessage() {
         aiMessage.className = "ai-message";
         aiMessage.innerHTML = `<strong>AI Tutor:</strong> ${data.response}`;
         chatBox.appendChild(aiMessage);
-        
+
+        if (data.hasScraping && data.scraped) {
+            let scrapedInfo = document.createElement("div");
+            scrapedInfo.className = "scraped-info";
+            scrapedInfo.innerHTML = `<details>
+                <summary>📚 View scraped information</summary>
+                <div class="scraped-content">${data.scraped}</div>
+            </details>`;
+            chatBox.appendChild(scrapedInfo);
+        }
         // If there was retrieval info and we want to show it
         if (data.hasRetrieval && data.retrieved) {
             let retrievalInfo = document.createElement("div");

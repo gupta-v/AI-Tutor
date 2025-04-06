@@ -12,6 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")
 from aiFeatures.python.ai_response import generate_response_without_retrieval, generate_response_with_retrieval, ChatSessionManager
 from aiFeatures.python.speech_to_text import speech_to_text
 from aiFeatures.python.text_to_speech import say, stop_speech
+from aiFeatures.python.web_scraping import web_response
 from aiFeatures.python.rag_pipeline import index_pdfs, retrieve_answer
 
 app = Flask(__name__)
@@ -115,30 +116,35 @@ def ask():
 
     try:
         # Get retrieved information if vector store exists
+        scraped_text = web_response(user_query)  # Call web scraping function
         retrieved_info = retrieve_answer(user_query, vector_store) if vector_store else ""
         
         # Generate response based on whether retrieval was performed
         if retrieved_info:
             response = generate_response_with_retrieval(
                 default_session_id, 
-                user_query, 
+                user_query,
+                scraped_text,
                 retrieved_info, 
                 session_manager
             )
         else:
             response = generate_response_without_retrieval(
                 default_session_id, 
+                scraped_text,
                 user_query, 
                 session_manager
             )
         
         say(response)  # Convert response to speech
 
-        # Return both the response and retrieved info
+        # Return both the response, scraped contents and retrieved info
         return jsonify({
             "response": response,
+            "scraped": scraped_text,
             "retrieved": retrieved_info,
-            "hasRetrieval": bool(retrieved_info)
+            "hasRetrieval": bool(retrieved_info),
+            "hasScraping": bool(scraped_text)
         })
     
     except Exception as e:

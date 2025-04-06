@@ -1,25 +1,48 @@
-google-generativeai
+# Langchain
 langchain 
-langchain-community
-langchain-openai
 langchain-google-geneai
-phidata 
-openai 
-vosk 
-google-cloud-texttospeech
+langchain-community
+langchain-cli
+
+
+# Gemini
+google-generativeai
+
+
+# Environment
 python-dotenv
+
+
+# Flask Frontend/Backend
 flask
 flask-cors
+
+
+# Parsers
 markdown2 
-beautifulsoup4
 mistune
-langchain-huggingface 
-sentence_transformers
-langchain-cli
-langchain-ollama
-faiss-cpu
-speechrecognition
-pyttsx3
 html2text
-gtts 
-pygame
+
+
+# Web Scrapings
+serp 
+serpapi
+googlesearch-python
+google-search-results
+beautifulsoup4
+
+
+# NLP
+langchain-ollama
+sentence_transformers
+
+
+# RAG
+faiss-cpu
+
+
+# Conversational Agents
+pyttsx3
+speechrecognition
+
+

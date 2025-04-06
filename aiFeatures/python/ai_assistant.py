@@ -7,8 +7,9 @@ from dotenv import load_dotenv
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "aiFeatures/python")))
 
 from ai_response import generate_response_without_retrieval, generate_response_with_retrieval, ChatSessionManager
+from web_scraping import web_response
 from speech_to_text import speech_to_text
-from text_to_speech import text_to_speech
+from text_to_speech import say as text_to_speech
 from rag_pipeline import retrieve_answer, index_pdfs
 
 # Load environment variables
@@ -75,20 +76,24 @@ def convert_to_markdown(html_text):
 
 def main():
     print("\nWelcome to AI Assistant!")
+    text_to_speech("Welcome to AI Assistant!")
     mode = input("\nChoose mode (text [1] / voice [2]): ").strip().lower()
 
     if mode in ["1", "text"]:
         user_input = input("\nType your question: ")
     elif mode in ["2", "voice"]:
         print("\nSpeak now...")
+        text_to_speech("Speak now...")
         user_input = speech_to_text()
         print("You said:", user_input)
+        text_to_speech("You said: " + user_input)
     else:
         print("\nInvalid mode. Choose 'text' (1) or 'voice' (2).")
         return
-
+    scraped_text= web_response(user_input)  # Call web_response function to get the scraped content
     # Step 1: Check if retrieval is needed
     retrieved_info = retrieve_answer(user_input, vector_store) if vector_store else ""
+    
     
     if retrieved_info:
         print("\nRetrieved information:")
@@ -96,9 +101,9 @@ def main():
 
     # Step 2: Choose AI response function based on retrieval
     if retrieved_info:
-        response = generate_response_with_retrieval(default_session_id, user_input, retrieved_info, session_manager)
+        response = generate_response_with_retrieval(default_session_id, user_input, scraped_text, retrieved_info, session_manager)
     else:
-        response = generate_response_without_retrieval(default_session_id, user_input, session_manager)
+        response = generate_response_without_retrieval(default_session_id, user_input, scraped_text, session_manager)
 
     # Format & print AI response
     formatted_response = convert_to_markdown(response)
