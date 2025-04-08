@@ -1,287 +1,553 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    font-family: 'Inter', sans-serif;
 }
 
-.chat-container {
-    width: 80%;
-    height: 85vh;
-    margin: auto;
-    background: white;
+:root {
+    --primary: #00f8af;
+    --primary-variant: #00f8af;
+    --secondary: #6ee7b7;
+    --background: #121212;
+    --surface: #1e1e1e;
+    --error: #cf6679;
+    --on-primary: #ffffff;
+    --on-secondary: #000000;
+    --on-background: #e0e0e0;
+    --on-surface: #ffffff;
+    --on-error: #000000;
+    --element-border-radius: 12px;
+    --card-elevation: 0px 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color: var(--background);
+    color: var(--on-background);
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+#title {
+    justify-content: center;
+    align-items: center;
+}
+
+/* Chat container styling with material design theme */
+.chat-container {
+    width: 85%;
+    height: 90vh;
+    margin: auto;
+    background: var(--surface);
+    padding: 24px;
+    border-radius: var(--element-border-radius);
+    box-shadow: var(--card-elevation);
     display: flex;
     flex-direction: column;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
 }
 
 /* App header */
 h2 {
     margin-top: 0;
-    color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
+    font-size: 3rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--secondary);
 }
+
+.kira {
+    color: var(--primary);
+    /* Or any specific color like #ff4081 */
+}
+
+.tagline {
+    color: var(--on-primary);
+    /* Or maybe something softer like #888 or #aaa */
+}
+
 
 /* Status indicator */
 .status-indicator {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-    color: #666;
+    margin-bottom: 18px;
+    font-size: 1.4rem;
+    color: var(--on-background);
+    opacity: 0.8;
 }
 
 .status-dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    margin-right: 8px;
+    margin-right: 10px;
+    transition: all 0.3s ease;
 }
 
 .status-dot.active {
-    background-color: #28a745;
-    box-shadow: 0 0 5px #28a745;
+    background-color: var(--secondary);
+    box-shadow: 0 0 10px var(--secondary);
 }
 
 .status-dot.inactive {
-    background-color: #dc3545;
+    background-color: var(--error);
 }
 
 .status-text {
-    font-style: italic;
+    font-style: normal;
+    font-weight: 500;
 }
 
 /* Chat box */
 #chat-box {
-    height: 75%;
+    height: 85%;
     overflow-y: auto;
-    padding: 10px;
-    border: 1px solid #ddd;
-    background: #fafafa;
-    margin-bottom: 15px;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    border-radius: 5px;
+    border-radius: var(--element-border-radius);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--surface);
+}
+
+#chat-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+#chat-box::-webkit-scrollbar-track {
+    background: var(--surface);
+    border-radius: 10px;
+}
+
+#chat-box::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 10px;
 }
 
 /* User messages (Right aligned) */
 .user-message {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px;
-    border-radius: 15px 15px 0 15px;
+    background-color: var(--primary);
+    color: var(--on-primary);
+    padding: 14px 18px;
+    border-radius: 18px 18px 0 18px;
     max-width: 70%;
     align-self: flex-end;
     text-align: left;
-    margin: 5px 10px;
+    margin: 8px 10px;
     word-wrap: break-word;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 1.4rem;
+    line-height: 1.5;
+    transition: all 0.3s ease;
 }
 
 /* AI responses (Left aligned) */
+/* Base AI message styling */
 .ai-message {
-    background-color: #E5E5EA;
-    color: black;
-    padding: 10px;
-    border-radius: 15px 15px 15px 0;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--on-surface);
+    padding: 30px 45px;
+    border-radius: 18px 18px 18px 0;
     max-width: 70%;
     align-self: flex-start;
     text-align: left;
-    margin: 5px 10px;
+    margin: 8px 10px;
     word-wrap: break-word;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    border-left: 3px solid var(--secondary);
+    font-size: 1.4rem;
+    line-height: 1.5;
+    transition: all 0.3s ease;
 }
 
 /* Thinking state for AI messages */
 .ai-message.thinking {
-    background-color: #f0f0f0;
-    animation: pulse 1.5s infinite;
+    background-color: rgba(255, 255, 255, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+    min-width: 100px;
+    padding: 20px 30px;
+}
+
+/* Hide any text content when in thinking state */
+.ai-message.thinking>*:not(.thinking-dots) {
+    display: none;
+}
+
+/* Thinking dots container */
+.thinking-dots {
+    display: flex;
+    align-items: flex-end;
+    height: 24px;
+    gap: 6px;
+}
+
+/* Individual dot */
+.thinking-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--secondary);
+    border-radius: 50%;
+    animation: dot-bounce 1.4s infinite ease-in-out;
+}
+
+/* Add different delays for each dot */
+.thinking-dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.thinking-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.thinking-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Optional 4th dot if needed */
+.thinking-dot:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+/* Animation for the bouncing effect */
+@keyframes dot-bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 /* Error state for AI messages */
 .ai-message.error {
-    background-color: #ffebee;
-    border-left: 3px solid #f44336;
+    background-color: rgba(207, 102, 121, 0.2);
+    border-left: 3px solid var(--error);
 }
 
 /* Retrieval information */
 .retrieval-info {
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--element-border-radius);
+    padding: 12px 16px;
     max-width: 70%;
     align-self: flex-start;
-    margin: 5px 10px;
+    margin: 8px 10px;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
 }
 
 .retrieval-info summary {
     cursor: pointer;
-    color: #007BFF;
+    color: var(--secondary);
     padding: 5px 0;
-    font-weight: bold;
+    font-weight: 500;
+    outline: none;
 }
 
 .retrieved-content {
-    padding: 10px 0;
-    border-top: 1px solid #ddd;
-    margin-top: 5px;
+    padding: 12px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 8px;
     max-height: 200px;
     overflow-y: auto;
-    font-size: 0.9rem;
+    font-size: 1.3rem;
+    line-height: 1.5;
 }
 
 /* Scraped information */
 .scraped-info {
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 5px 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--element-border-radius);
+    padding: 12px 16px;
     max-width: 70%;
     align-self: flex-start;
-    margin: 5px 10px;
+    margin: 8px 10px;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
 }
 
 .scraped-info summary {
     cursor: pointer;
-    color: #007BFF;
+    color: var(--secondary);
     padding: 5px 0;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .scraped-content {
-    padding: 10px 0;
-    border-top: 1px solid #ddd;
-    margin-top: 5px;
+    padding: 12px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 8px;
     max-height: 200px;
     overflow-y: auto;
-    font-size: 0.9rem;
+    font-size: 1.3rem;
+    line-height: 1.5;
 }
 
 /* File name display */
 .file-name-display {
-    background-color: #f0f0f0;
-    color: #666;
-    padding: 10px;
-    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--on-background);
+    padding: 12px 16px;
+    border-radius: var(--element-border-radius);
     max-width: 70%;
     align-self: flex-start;
     text-align: left;
-    margin: 5px 10px;
+    margin: 8px 10px;
     font-style: italic;
+    font-size: 1.3rem;
 }
 
 /* Input section */
 .input-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
-    padding: 10px;
+    padding: 8px;
     position: relative;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: var(--element-border-radius);
+    transition: all 0.3s ease;
 }
 
 /* Textarea input field */
 .textbar {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 14px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--element-border-radius);
     resize: none;
-    min-height: 20px;
+    min-height: 24px;
     max-height: 150px;
-    font-family: inherit;
-    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.4rem;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--on-surface);
+    transition: all 0.3s ease;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) transparent;
+    padding-right: 50px;
+    padding: 14px 16px 14px 16px;
 }
+
+
+.textbar:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(98, 0, 238, 0.25);
+}
+
+.textbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.textbar::-webkit-scrollbar-track {
+    background: var(--surface);
+    border-radius: 10px;
+}
+
+.textbar::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 10px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+
 
 /* Button group */
 .button-group {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 12px;
 }
 
 /* PDF controls */
 .pdf-controls {
     display: flex;
     justify-content: flex-start;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 12px;
+    margin-top: 12px;
 }
 
-/* Buttons */
+/* Buttons - Fixed sizing and better state handling */
 button {
-    padding: 10px 15px;
-    border: none;
-    background-color: #007BFF;
-    color: white;
-    border-radius: 5px;
+    padding: 12px 22px;
+    background-color: transparent;
+    border-radius: 24px;
+    /* font-size: 1.4rem; */
+    color: var(--primary);
+    letter-spacing: 0.03em;
+    font-weight: 500;
+    border: 2px solid var(--primary);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
-    transition: background-color 0.3s;
     position: relative;
+    overflow: hidden;
+    min-width: 44px;
+    min-height: 44px;
+    max-width: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+button:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(100, 100);
+        opacity: 0;
+    }
 }
 
 button:hover {
-    background-color: #0056b3;
+    transform: translateY(-2px);
+    background-color: var(--primary);
+    color: var(--on-primary);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+button:active {
+    transform: translateY(1px);
 }
 
 .send-button {
-    background-color: #007BFF;
+    background-color: var(--primary);
+    color: var(--on-primary);
     min-width: 80px;
 }
 
-.mic-button {
-    background-color: #6c757d;
+.send-button:hover {
+    background-color: var(--primary-variant);
 }
 
+.mic-button,
 .doc-button {
-    background-color: #28a745;
+    background-color: transparent;
 }
 
+/* Stop button specific styles with better state handling */
 .stop-button {
-    background-color: #dc3545;
+    background-color: transparent;
+    border-color: var(--primary);
+    color: var(--primary);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 80px;
+    /* Ensure consistent width for all states */
+    transform: none !important;
+    /* Prevent transform issues */
 }
 
 /* Mic button active state */
 .mic-button.active {
-    background-color: #ff4136;
+    background-color: var(--primary);
+    color: var(--on-primary);
     animation: pulse 1.5s infinite;
+}
+
+/* Stop button states */
+.stop-button.stopping {
+    background-color: #f44336;
+    /* Material red */
+    border-color: #f44336;
+    color: white;
+    animation: none;
+    /* Remove animation to prevent jitter */
+}
+
+/* Enhanced stop button styles */
+.stop-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+    /* Prevent transform issues when disabled */
+}
+
+.stop-button:active {
+    transform: translateY(1px) !important;
+    /* Only allow this specific transform */
 }
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(255, 65, 54, 0.7);
+        box-shadow: 0 0 0 0 rgba(98, 0, 238, 0.7);
     }
 
     70% {
-        box-shadow: 0 0 0 10px rgba(255, 65, 54, 0);
+        box-shadow: 0 0 0 10px rgba(98, 0, 238, 0);
     }
 
     100% {
-        box-shadow: 0 0 0 0 rgba(255, 65, 54, 0);
+        box-shadow: 0 0 0 0 rgba(98, 0, 238, 0);
     }
 }
 
 /* Tooltip styling */
 .tooltip {
     visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
+    width: 130px;
+    background-color: var(--surface);
+    color: var(--on-surface);
     text-align: center;
-    padding: 5px;
-    border-radius: 5px;
+    padding: 8px 10px;
+    border-radius: 6px;
     position: absolute;
     bottom: 150%;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
     transition: opacity 0.3s;
-    font-size: 12px;
+    font-size: 1.2rem;
     z-index: 5;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Show tooltip on hover */
@@ -296,14 +562,17 @@ button:hover .tooltip {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px 30px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+    background: var(--surface);
+    padding: 24px 32px;
+    border-radius: var(--element-border-radius);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     z-index: 10;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--on-surface);
+    font-size: 1.5rem;
 }
 
 /* Loading indicator */
@@ -312,24 +581,27 @@ button:hover .tooltip {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px 30px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+    background: var(--surface);
+    padding: 24px 32px;
+    border-radius: var(--element-border-radius);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     z-index: 10;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--on-surface);
+    font-size: 1.5rem;
 }
 
 .spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    width: 36px;
-    height: 36px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border-left-color: #007BFF;
+    border-left-color: var(--primary);
     animation: spin 1s linear infinite;
-    margin: 15px 0;
+    margin: 18px 0;
 }
 
 @keyframes spin {
@@ -352,15 +624,15 @@ button:hover .tooltip {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    gap: 5px;
-    margin-top: 15px;
+    gap: 6px;
+    margin-top: 18px;
     height: 40px;
 }
 
 .wave {
     width: 6px;
     height: 25px;
-    background-color: #007BFF;
+    background-color: var(--primary);
     border-radius: 4px;
     animation: wave-animation 1.2s infinite ease-in-out;
 }
@@ -398,8 +670,246 @@ button:hover .tooltip {
     }
 }
 
+/* Typing text animation with material theme colors */
+.typing-text {
+    font-size: 2.4rem;
+    font-weight: 700;
+    min-width: 280px;
+    color: var(--on-background);
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+    display: flex;
+}
+
+.typing-text::before {
+    content: "I'm";
+    color: var(--on-background);
+    margin-right: 6px;
+}
+
+.typing-text span {
+    position: relative;
+    display: inline-block;
+    color: var(--primary);
+    overflow: hidden;
+    min-width: 150px;
+}
+
+/* The animated text that changes */
+.typing-text span::before {
+    content: " an AI Tutor";
+    animation: typing-text 15s infinite;
+}
+
+/* The cursor and typing effect */
+.typing-text span::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--surface);
+    border-left: 3px solid var(--primary);
+    animation: typing-cursor 15s steps(15, end) infinite;
+}
+
+/* Animation for the cursor movement */
+@keyframes typing-cursor {
+
+    /* Type out first phrase */
+    0%,
+    3% {
+        width: 100%;
+    }
+
+    13% {
+        width: 0;
+    }
+
+    /* Stay visible briefly */
+    14%,
+    16% {
+        width: 0;
+    }
+
+    /* Delete first phrase */
+    17%,
+    19% {
+        width: 100%;
+    }
+
+    /* Type out second phrase */
+    20%,
+    23% {
+        width: 100%;
+    }
+
+    33% {
+        width: 0;
+    }
+
+    /* Stay visible briefly */
+    34%,
+    36% {
+        width: 0;
+    }
+
+    /* Delete second phrase */
+    37%,
+    39% {
+        width: 100%;
+    }
+
+    /* Type out third phrase */
+    40%,
+    43% {
+        width: 100%;
+    }
+
+    53% {
+        width: 0;
+    }
+
+    /* Stay visible briefly */
+    54%,
+    56% {
+        width: 0;
+    }
+
+    /* Delete third phrase */
+    57%,
+    59% {
+        width: 100%;
+    }
+
+    /* Type out fourth phrase */
+    60%,
+    63% {
+        width: 100%;
+    }
+
+    73% {
+        width: 0;
+    }
+
+    /* Stay visible briefly */
+    74%,
+    76% {
+        width: 0;
+    }
+
+    /* Delete fourth phrase */
+    77%,
+    79% {
+        width: 100%;
+    }
+
+    /* Type out fifth phrase */
+    80%,
+    83% {
+        width: 100%;
+    }
+
+    93% {
+        width: 0;
+    }
+
+    /* Stay visible briefly */
+    94%,
+    96% {
+        width: 0;
+    }
+
+    /* Delete fifth phrase */
+    97%,
+    100% {
+        width: 100%;
+    }
+}
+
+/* Animation for the text content */
+@keyframes typing-text {
+
+    0%,
+    19% {
+        content: " an AI Tutor";
+    }
+
+    20%,
+    39% {
+        content: " a Virtual Assistant";
+    }
+
+    40%,
+    59% {
+        content: " a Knowledge Base";
+    }
+
+    60%,
+    79% {
+        content: " a Learning Partner";
+    }
+
+    80%,
+    100% {
+        content: " a Digital Helper";
+    }
+}
+
+/* Special styling for the stopping state to ensure it remains consistent */
+.stopping {
+    background-color: #f44336 !important;
+    /* Material Design red */
+    border-color: #f44336 !important;
+    color: white !important;
+    box-shadow: 0 2px 4px rgba(244, 67, 54, 0.4) !important;
+    transform: none !important;
+}
+
+/* Dialog styling */
+dialog {
+    background: var(--surface);
+    color: var(--on-surface);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--element-border-radius);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    padding: 24px;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+dialog button {
+    margin-top: 16px;
+    margin-right: 8px;
+}
+
+/* Dialog buttons */
+.dialog-button-primary {
+    background-color: var(--primary);
+    color: var(--on-primary);
+}
+
+.dialog-button-secondary {
+    background-color: transparent;
+    color: var(--on-surface);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Alert dialog */
+.alert-dialog {
+    max-width: 400px;
+    text-align: center;
+}
+
 /* Responsive styles */
 @media (max-width: 768px) {
+    html {
+        font-size: 50%;
+    }
+
     .chat-container {
         width: 95%;
         height: 90vh;
@@ -415,37 +925,76 @@ button:hover .tooltip {
         flex-direction: column;
     }
 
-    .button-group,
-    .pdf-controls {
+    .button-group {
         justify-content: center;
     }
-}
 
-.stop-button.stopping {
-    background-color: #ffc107;
-    animation: pulse 1s infinite;
-}
-
-/* Enhanced stop button styles */
-.stop-button:disabled {
-    opacity: 0.7;
-    cursor: wait;
-}
-
-.stop-button:active {
-    transform: scale(0.95);
-}
-
-@keyframes pulse-stop {
-    0% {
-        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+    button {
+        padding: 10px 16px;
+        font-size: 1.3rem;
+        min-width: 40px;
+        min-height: 40px;
     }
 
-    70% {
-        box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+    .pdf-controls {
+        justify-content: center;
+        flex-wrap: wrap;
     }
+}
 
-    100% {
-        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
-    }
+/* Additional styles for dialog shown in screenshots */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.dialog-content {
+    background-color: var(--surface);
+    padding: 20px 24px;
+    border-radius: var(--element-border-radius);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dialog-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.dialog-button {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 1.4rem;
+    transition: all 0.2s ease;
+    min-width: 80px;
+}
+
+.dialog-button-confirm {
+    background-color: #e0e0e0;
+    color: #121212;
+    border: none;
+}
+
+.dialog-button-cancel {
+    background-color: transparent;
+    color: #e0e0e0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dialog-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
