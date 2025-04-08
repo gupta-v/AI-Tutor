@@ -907,18 +907,19 @@ dialog button {
 /* Responsive styles */
 @media (max-width: 768px) {
     html {
-        font-size: 50%;
+        font-size: 40%;
     }
 
     .chat-container {
-        width: 95%;
-        height: 90vh;
+        width: 99%;
+        height: 96vh;
     }
 
     .user-message,
     .ai-message,
     .retrieval-info {
         max-width: 85%;
+        padding: 12px 16px;
     }
 
     .input-container {
