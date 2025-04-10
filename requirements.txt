@@ -1,6 +1,6 @@
 # Langchain
 langchain 
-langchain-google-geneai
+langchain-google-genai
 langchain-community
 langchain-cli
 
