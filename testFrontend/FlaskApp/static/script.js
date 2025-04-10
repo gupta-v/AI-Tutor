@@ -355,7 +355,7 @@ function stopSpeech() {
     const stopButton = document.querySelector('.stop-button');
     const originalContent = stopButton.innerHTML;
     stopButton.disabled = true;
-    stopButton.style.backgroundColor = '#dfff00';
+    stopButton.style.backgroundColor = '#ffffff';
     stopButton.innerHTML = '⏱ Stopping...';
     
     // Make multiple attempts to stop the speech
@@ -369,12 +369,12 @@ function stopSpeech() {
             console.log("Stop speech response:", data);
             
             if (data.success) {
-                stopButton.style.backgroundColor = '#1cff13';
+                stopButton.style.backgroundColor = '#ffffff';
                 stopButton.innerHTML = '✓ Stopped';
                 
                 setTimeout(() => {
                     stopButton.disabled = false;
-                    stopButton.style.backgroundColor = '#1e1e1e';
+                    stopButton.style.backgroundColor = '#ffffff';
                     stopButton.innerHTML = originalContent;
                 }, 500);
             } 
