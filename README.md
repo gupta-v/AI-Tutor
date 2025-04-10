@@ -36,12 +36,12 @@
 
 ### 🧩 Multi-Model Chaining
 - Chains multiple models during RAG processing:
+    | Model             | Purpose                                                                                                       |
+    |-------------------|---------------------------------------------------------------------------------------------------------------|
+    | **shunya_llm**    | Generation for non-retrieved queries using user input + web-scraped content.                                  |
+    | **pratham_llm**   | Retrieval-based topic generation using vector DB or document content.                                         |
+    | **dviteey_llm**   | Cross-verification of pratham_llm's output using retrieved data to reduce hallucinations and enhance clarity. |
 
-    | Model          | Purpose                                                |
-    |----------------|--------------------------------------------------------|
-    | **shunya_llm** | Preprocessing query + keyword extraction               |
-    | **pratham_llm**| Retrieval-based PDF-specific question answering        |
-    | **dviteey_llm**| Web-based fallback model with broader context handling |
 
 ### 📚 Resource-Driven Recommendations
 - Offers curated links or document-based responses with no redundancy—focused only on what's essential for the user.
