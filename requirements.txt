@@ -22,6 +22,7 @@ flask-cors
 markdown2 
 mistune
 html2text
+pypdf
 
 
 # Web Scrapings
@@ -44,5 +45,6 @@ faiss-cpu
 # Conversational Agents
 pyttsx3
 speechrecognition
+pyaudio
 
 
