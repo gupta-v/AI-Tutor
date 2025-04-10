@@ -9,3 +9,6 @@ config.py
 path.py
 .codegpt
 backend/
+docs/
+embedding.py
+scraped_content.txt

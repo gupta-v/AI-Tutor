@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Tutor</title>
+    <title>KIRA | AI Tutor</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
@@ -12,7 +16,20 @@
   </head>
   <body>
     <div class="chat-container">
-      <h2>🎓 AI Tutor</h2>
+      <div id="titile">
+        <h2>
+          <span class="kira">KIRA</span> – <span class="tagline">The Voice of Knowledge</span>
+        </h2>
+        
+        <h3 class="typing-text"><span></span></h3>
+      </div>
+
+      <!-- Status indicator for RAG system -->
+      <div id="rag-status" class="status-indicator">
+        <span class="status-dot inactive"></span>
+        <span class="status-text">No PDFs loaded</span>
+      </div>
+
       <div id="chat-box"></div>
 
       <!-- Listening Popup -->
@@ -29,20 +46,67 @@
         </div>
       </div>
 
+      <!-- PDF Loading Progress -->
+      <div id="loading-indicator" class="hidden">
+        <div class="loading-box">
+          <p id="loading-text">Loading PDFs...</p>
+          <div class="spinner"></div>
+        </div>
+      </div>
+
       <div class="input-container">
-        <input
+        <textarea
           class="textbar"
-          type="text"
           id="user-input"
           placeholder="Type your question..."
-        />
-        <button onclick="sendMessage()">Send</button>
-        <button class="mic-button" onclick="startVoiceInput()">
-          🎤 <span class="tooltip">Tap to speak/stop</span>
-        </button>
-        <button class="stop-button" onclick="stopSpeech()">
-          🛑 <span class="tooltip">Stop speech</span>
-        </button>
+          rows="1"
+          onkeydown="handleTextareaInput(event)"
+        ></textarea>
+        <div class="button-group">
+          <button class="send-button" onclick="sendMessage()">
+            <i class="fa-regular fa-paper-plane"></i>
+            <span class="tooltip">Ask Tutor</span>
+          </button>
+          <button class="mic-button" onclick="toggleVoiceInput()">
+            <i class="fa-solid fa-microphone-lines"></i>
+            <span class="tooltip">Tap to speak/stop</span>
+          </button>
+          <button
+            class="doc-button"
+            onclick="document.getElementById('pdf-files').click()"
+          >
+            <i class="fa-solid fa-paperclip"></i>
+            <span class="tooltip">Add PDF Files</span>
+          </button>
+
+          <button class="stop-button" onclick="stopSpeech()">
+            <i class="fa-solid fa-stop"></i>
+            <span class="tooltip">Stop speech</span>
+          </button>
+        </div>
+      </div>
+
+        <div class="pdf-controls">
+          <input
+            type="file"
+            id="pdf-files"
+            accept=".pdf"
+            multiple
+            style="display: none"
+            onchange="handleFileUpload(this.files)"
+          />
+          <input
+            type="file"
+            id="pdf-folder"
+            webkitdirectory
+            directory
+            multiple
+            style="display: none"
+            onchange="handleFolderUpload(this.files)"
+          />
+
+        
+        </div>
       </div>
     </div>
   </body>
