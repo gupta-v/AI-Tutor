@@ -1,51 +1,60 @@
 # KIRA: AI Tutor - Smart Multimodal Learning Assistant
 
-**AI Tutor** is an intelligent, multimodal educational assistant built using **Flask** and advanced **AI models**, designed to provide precise and engaging learning support. Whether you're uploading PDFs for reference or seeking real-time answers through web scraping, AI Tutor adapts dynamically using **Retrieval-Augmented Generation (RAG)** and **Agentic capabilities** to ensure tailored responses.
+**Version-1**
+
+## Description
+
+**KIRA** is an intelligent, multimodal educational assistant built using **Flask** and advanced **AI models**, designed to provide precise and engaging learning support. Whether you're uploading PDFs for reference or seeking real-time answers through web scraping, AI Tutor adapts dynamically using **Retrieval-Augmented Generation (RAG)** and **Agentic capabilities** to ensure tailored responses.
 
 ## Tech Stack
 
-| Layer                    | Technologies Used                                                                 |
-|--------------------------|-----------------------------------------------------------------------------------|
-| **Frontend**             | Flask, HTML, CSS, JavaScript                                                      |
-| **AI Models**            | Gemini 1.5-flash, Gemini 2.0-flash, mxbai-embed-large:latest                      |
-| **Vector Datastore**     | FAISS (in-memory vector store)                                                   |
-| **Web Scraping**         | Langchain Tools, BeautifulSoup4, SERP                                            |
-| **RAG + Agentic Support**| Langchain, GoogleGenerativeAI, webbrowser                                        |
-| **NLP Processing**       | Ollama Embeddings, CharacterTextSplitter, NLTK                                   |
-| **Voice Interaction**    | SpeechRecognition, pyttsx3 (TTS)                                                 |
+| Layer                     | Technologies Used                                            |
+| ------------------------- | ------------------------------------------------------------ |
+| **Frontend**              | Flask, HTML, CSS, JavaScript                                 |
+| **AI Models**             | Gemini 1.5-flash, Gemini 2.0-flash, mxbai-embed-large:latest |
+| **Vector Datastore**      | FAISS (in-memory vector store)                               |
+| **Web Scraping**          | Langchain Tools, BeautifulSoup4, SERP                        |
+| **RAG + Agentic Support** | Langchain, GoogleGenerativeAI, webbrowser                    |
+| **NLP Processing**        | Ollama Embeddings, CharacterTextSplitter, NLTK               |
+| **Voice Interaction**     | SpeechRecognition, pyttsx3 (TTS)                             |
 
 ## Features
 
 ### 🔁 Dual Response Capability
+
 - **With PDFs**: Extracts content from uploaded PDFs, embeds them into FAISS using cosine similarity, and generates responses by augmenting model outputs.
 - **Without PDFs**: Uses real-time web scraping and curates links from the web to answer queries dynamically.
 
 ### 🧠 Intelligent Context Handling
+
 - Differentiates between **retrieval mode** (document-based) and **non-retrieval mode** (web-based), ensuring the most context-aware and relevant responses.
 
 ### 🔗 RAG Capabilities
+
 - Retrieves embedded vector chunks using cosine similarity and enhances Gemini-generated outputs with this specific context.
 
 ### 🤖 Agentic Capabilities
+
 - Automates browsing using web scraping tools.
 - Opens recommended learning links in the user's browser for detailed study.
 
 ### 🎙️ Voice-Enabled Learning
+
 - Listens to queries using **speech recognition**.
 - Responds using **text-to-speech**, improving accessibility and engagement.
 
 ### 🧩 Multi-Model Chaining
-- Chains multiple models during RAG processing:
-    | Model             | Purpose                                                                                                       |
-    |-------------------|---------------------------------------------------------------------------------------------------------------|
-    | **shunya_llm**    | Generation for non-retrieved queries using user input + web-scraped content.                                  |
-    | **pratham_llm**   | Retrieval-based topic generation using vector DB or document content.                                         |
-    | **dviteey_llm**   | Cross-verification of pratham_llm's output using retrieved data to reduce hallucinations and enhance clarity. |
 
+- Chains multiple models during RAG processing:
+  | Model | Purpose |
+  |-------------------|---------------------------------------------------------------------------------------------------------------|
+  | **shunya_llm** | Generation for non-retrieved queries using user input + web-scraped content. |
+  | **pratham_llm** | Retrieval-based topic generation using vector DB or document content. |
+  | **dviteey_llm** | Cross-verification of pratham_llm's output using retrieved data to reduce hallucinations and enhance clarity. |
 
 ### 📚 Resource-Driven Recommendations
-- Offers curated links or document-based responses with no redundancy—focused only on what's essential for the user.
 
+- Offers curated links or document-based responses with no redundancy—focused only on what's essential for the user.
 
 ## 📁 File Structure (with Descriptions)
 
@@ -166,7 +175,6 @@ OLLAMA_MODEL=mxbai-embed-large
 
 You’re now ready to use Ollama with AI Tutor🌟
 
-
 ## Example Usage
 
 ### Voice Query
@@ -187,18 +195,15 @@ You’re now ready to use Ollama with AI Tutor🌟
 
 - ✅ FAISS retrieves PDF chunks → Gemini refines answer using those → 🎧 Output is spoken
 
-
 ## To-Do / Future Enhancements
 
 - ✅ Add image-based query support (Multimodal)
 - 🔄 Integrate quiz and flashcards generation from uploaded materials
 - 🔒 Secure backend in GOlang/Python
-- 🚀 Scaling and deployment using Docker + Firebase 
+- 🚀 Scaling and deployment using Docker + Firebase
 
 ## Credits
 
 - Developed by Vaibhav Gupta, Shweta Maurya, Shreya Pandey, Vartika Upadhyay
 - Built using Google's Gemini API, FAISS, Langchain, and Ollama
 - Open-source contributions are welcome 🤝
-
-
