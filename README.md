@@ -4,7 +4,7 @@
 
 ## Description
 
-**KIRA** is an intelligent, multimodal educational assistant built using **Flask** and advanced **AI models**, designed to provide precise and engaging learning support. Whether you're uploading PDFs for reference or seeking real-time answers through web scraping, AI Tutor adapts dynamically using **Retrieval-Augmented Generation (RAG)** and **Agentic capabilities** to ensure tailored responses.
+**KIRA** is an intelligent, multimodal educational assistant built using **Flask**, **Langchain** and advanced **AI models**, designed to provide precise and engaging learning support. Whether you're uploading PDFs for reference or seeking real-time answers through web scraping, AI Tutor adapts dynamically using **Retrieval-Augmented Generation (RAG)** and **Agentic capabilities** to ensure tailored responses.
 
 ## Tech Stack
 
